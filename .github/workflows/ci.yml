@@ -83,6 +83,5 @@ jobs:
 
       - name: Run main
         run: |
-          # main.py 경로에 맞게 수정
-          poetry run python FastApi2/main.py || true
-`
+          # Medium 폴더 안 main.py 실행
+          poetry run python Medium/main.py || true
