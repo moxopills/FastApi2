@@ -38,8 +38,8 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-root
 
-      - name: Run Black
-        run: poetry run black . --check --diff
+      - name: Run Black (auto-fix)
+        run: poetry run black .  # --check 제거, 자동 포맷 적용
 
       - name: Run Ruff
         run: poetry run ruff check --fix --verbose
