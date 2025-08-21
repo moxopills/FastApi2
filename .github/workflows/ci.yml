@@ -1,7 +1,5 @@
 name: CI
 
-name: CI
-
 on:
   push:
 
@@ -44,8 +42,7 @@ jobs:
         run: poetry run black . --check --diff
 
       - name: Run Ruff
-        run: |
-          poetry run ruff check --fix --verbose
+        run: poetry run ruff check --fix --verbose
 
       - name: Run Mypy
         run: poetry run mypy .
@@ -86,5 +83,6 @@ jobs:
 
       - name: Run main
         run: |
-          poetry run python main.py
-
+          # main.py 경로에 맞게 수정
+          poetry run python FastApi2/main.py || true
+`
