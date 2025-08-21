@@ -85,4 +85,3 @@ jobs:
         run: |
           # Medium 폴더 안 main.py 실행
           poetry run python Medium/main.py || true
-          k
