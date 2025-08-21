@@ -35,8 +35,6 @@ jobs:
         id: cache-venv
         uses: actions/cache@v3
         with:
-          # 파이썬 버전이 바뀌었을때, lock 파일이나 toml 파일이 바뀌었을때 종속성을 재설치합니다.
-          # 바뀐 것이 없는 경우에는 캐싱된 종속성을 사용합니다.
           key: python-${{ steps.setup-python.outputs.python-version }}-poetry-lock-${{ hashFiles('poetry.lock') }}-toml-${{ hashFiles('pyproject.toml') }}-poetry-1.8.5
           path: /home/runner/.cache/pypoetry/virtualenvs/
 
@@ -55,11 +53,11 @@ jobs:
       - name: Run Mypy
         run: poetry run mypy .
 
-  test:
+  main:
     runs-on: ubuntu-22.04
     steps:
       - name: Check out the codes
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup python environment
         id: setup-python
