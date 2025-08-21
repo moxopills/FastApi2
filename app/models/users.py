@@ -1,6 +1,6 @@
 import random
 from enum import Enum
-from pydantic import BaseModel
+from pydantic import BaseModel,conint
 
 class genderEnum(str, Enum):
     male = "male"
@@ -18,7 +18,7 @@ class UserUpdateRequest(BaseModel):
 
 class UserSearchRequest(BaseModel):
     username: str | None = None
-    age: coint(gt=0) | None = None
+    age: conint(gt=0) | None = None
     gender: genderEnum | None = None
 
 class UserModel:

@@ -10,12 +10,14 @@ jobs:
       - name: Check out the codes
         uses: actions/checkout@v3
 
-      - name: Setup Python
+      - name: Setup python environment
+        id: setup-python
         uses: actions/setup-python@v2
         with:
           python-version: "3.13"
 
       - name: Cache Poetry
+        id: cache-poetry
         uses: actions/cache@v3
         with:
           key: poetry-1.8.5
@@ -30,35 +32,41 @@ jobs:
         run: echo "${HOME}/.poetry/bin" >> $GITHUB_PATH
 
       - name: Cache dependencies
+        id: cache-venv
         uses: actions/cache@v3
         with:
-          key: python-${{ hashFiles('poetry.lock','pyproject.toml') }}-poetry-1.8.5
+          key: python-${{ steps.setup-python.outputs.python-version }}-poetry-lock-${{ hashFiles('poetry.lock') }}-toml-${{ hashFiles('pyproject.toml') }}-poetry-1.8.5
           path: /home/runner/.cache/pypoetry/virtualenvs/
 
       - name: Install dependencies
+        if: steps.cache-venv.outputs.cache-hit != 'true'
         run: poetry install --no-root
 
-      - name: Run Black (auto-fix)
-        run: poetry run black .  # --check 제거, 자동 포맷 적용
+      - name: Run Black
+        run: poetry run black . --check --diff
 
       - name: Run Ruff
-        run: poetry run ruff check --fix --verbose
+        run: |
+          poetry run ruff check --select I --fix
+          poetry run ruff check --fix
 
       - name: Run Mypy
         run: poetry run mypy .
 
-  main:
+  run-main:
     runs-on: ubuntu-22.04
     steps:
       - name: Check out the codes
         uses: actions/checkout@v3
 
-      - name: Setup Python
+      - name: Setup python environment
+        id: setup-python
         uses: actions/setup-python@v2
         with:
           python-version: "3.13"
 
       - name: Cache Poetry
+        id: cache-poetry
         uses: actions/cache@v3
         with:
           key: poetry-1.8.5
@@ -73,14 +81,16 @@ jobs:
         run: echo "${HOME}/.poetry/bin" >> $GITHUB_PATH
 
       - name: Cache dependencies
+        id: cache-venv
         uses: actions/cache@v3
         with:
-          key: python-${{ hashFiles('poetry.lock','pyproject.toml') }}-poetry-1.8.5
+          key: python-${{ steps.setup-python.outputs.python-version }}-poetry-lock-${{ hashFiles('poetry.lock') }}-toml-${{ hashFiles('pyproject.toml') }}-poetry-1.8.5
           path: /home/runner/.cache/pypoetry/virtualenvs/
 
       - name: Install dependencies
+        if: steps.cache-venv.outputs.cache-hit != 'true'
         run: poetry install --no-root
 
-      - name: Run main
+      - name: Run main.py
         run: |
-          poetry run python Medium/main.py || true
+          poetry run python Medium/main.py
