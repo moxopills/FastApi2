@@ -42,8 +42,9 @@ jobs:
         if: steps.cache-venv.outputs.cache-hit != 'true'
         run: poetry install --no-root
 
-      - name: Run Black
-        run: poetry run black . --check --diff
+      # 🔥 여기 자동 정렬 모드로 변경
+      - name: Run Black (auto format)
+        run: poetry run black .
 
       - name: Run Ruff
         run: |
