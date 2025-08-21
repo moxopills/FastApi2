@@ -93,4 +93,4 @@ jobs:
 
       - name: Run main.py
         run: |
-          poetry run python Medium/main.py
+          poetry run python main.py
